@@ -31,7 +31,7 @@ public class FavouriteFragment extends Fragment {
     TextView txtSong;
     ArrayList<String> name;
 
-    public FavouriteFragment() {
+    private FavouriteFragment() {
         // Required empty public constructor
     }
 
@@ -57,7 +57,7 @@ public class FavouriteFragment extends Fragment {
         cursor = DB.getData();
         name= new ArrayList<>();
 
-        if(cursor !=null){
+        if(cursor != null){
             while (cursor.moveToNext()){
                 name.add(cursor.getString(0));
             }
@@ -101,9 +101,23 @@ public class FavouriteFragment extends Fragment {
             removeFavourite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DB.deleteFavourite(name.get(i));
-                    name.remove(i);
-                    notifyDataSetChanged();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Confirmation");
+                    builder.setMessage("Are Your Sure to Remove From Favourites?");
+                    builder.setIcon(R.drawable.ic_trash);
+                    builder.setCancelable(true);
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            DB.deleteFavourite(name.get(i));
+                            name.remove(i);
+                            notifyDataSetChanged();
+                            Toast.makeText(getContext(), "Successfully Removed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    builder.setNegativeButton("No", null);
+                    AlertDialog alert =builder.create();
+                    alert.show();
                 }
             });
             return myView;

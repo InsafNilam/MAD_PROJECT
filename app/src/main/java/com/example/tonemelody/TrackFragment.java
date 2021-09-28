@@ -3,6 +3,7 @@ package com.example.tonemelody;
 import static android.os.Environment.getExternalStorageDirectory;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SeekBar;
@@ -34,7 +36,7 @@ public class TrackFragment extends Fragment {
     ArrayList<File> musics;
     int position=0;
 
-    ImageView playPauseBtn,nextBtn,prevBtn,fastForwardBtn,fastRewindBtn, imageView;
+    ImageView playPauseBtn,nextBtn,prevBtn,fastForwardBtn,fastRewindBtn, imageView, zoom;
     TextView txtEnd,txtStart;
     SeekBar playerSeekBar;
 
@@ -44,6 +46,8 @@ public class TrackFragment extends Fragment {
 
     static MediaPlayer mediaPlayer;
 
+    private TrackFragment(){ }
+
     public static TrackFragment newInstance() { return  new TrackFragment(); }
     @Override
     public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
@@ -52,6 +56,7 @@ public class TrackFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_track, container, false);
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -63,6 +68,8 @@ public class TrackFragment extends Fragment {
         prevBtn =getView().findViewById(R.id.prevBtn);
         fastRewindBtn =getView().findViewById(R.id.fastRewindBtn);
         fastForwardBtn =getView().findViewById(R.id.fastForwardBtn);
+
+        zoom = getView().findViewById(R.id.zoom);
 
         imageView= getView().findViewById(R.id.imageView);
 
@@ -83,10 +90,11 @@ public class TrackFragment extends Fragment {
         cursor.close();
         }
 
-        if(mediaPlayer!=null){
+        if(mediaPlayer != null){
             mediaPlayer.stop();
             mediaPlayer.release();
         }
+
         displaySong();
 
         Uri uri = Uri.parse(musics.get(position).toString());
@@ -233,6 +241,17 @@ public class TrackFragment extends Fragment {
                     }
                 });
             }});
+
+        zoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mediaPlayer.stop();
+
+                startActivity(new Intent(getContext(),PlayerActivity.class)
+                        .putExtra("songs",musics)
+                        .putExtra("pos",position));
+            }
+        });
     }
     public void  displaySong(){
         try {
@@ -244,17 +263,6 @@ public class TrackFragment extends Fragment {
             }
             CustomAdapter customAdapter = new CustomAdapter();
             listView.setAdapter(customAdapter);
-
-//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                    position=i-1;
-//                    nextBtn.performClick();
-////                    startActivity(new Intent(getContext(),PlayerActivity.class)
-////                            .putExtra("songs",musics)
-////                            .putExtra("pos",i));
-//                }
-//            });
         }catch (NullPointerException e){
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -268,7 +276,7 @@ public class TrackFragment extends Fragment {
             for (File currentFiles : files) {
                 if (currentFiles.isDirectory() && !currentFiles.isHidden()) {
                     musicFiles.addAll(findMusics(currentFiles));
-                } else {
+                }else {
                     if (currentFiles.getName().endsWith(".mp3") || currentFiles.getName().endsWith(".wav") || currentFiles.getName().endsWith(".mp4a")) {
                         musicFiles.add(currentFiles);
                     }
@@ -305,7 +313,7 @@ public class TrackFragment extends Fragment {
         }
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
-            @SuppressLint("ViewHolder") View myView = getLayoutInflater().inflate(R.layout.list_items,null);
+            @SuppressLint({"ViewHolder", "InflateParams"}) View myView = getLayoutInflater().inflate(R.layout.list_items,null);
             TextView txtSong = myView.findViewById(R.id.txtSong);
             txtSong.setSelected(true);
             txtSong.setText(songs[i]);
@@ -315,7 +323,10 @@ public class TrackFragment extends Fragment {
             addPlayBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DB.insertPlaylist(songs[i],"Recently Added",musics.get(i).toString());
+                    if(DB.insertPlaylist(songs[i],"Recently Added",musics.get(i).toString()))
+                        Toast.makeText(getContext(), "Added to Playlist", Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(getContext(), "Already Added", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -338,8 +349,10 @@ public class TrackFragment extends Fragment {
                     if(!DB.insertFavourite(songs[i],musics.get(i).toString())){
                         DB.deleteFavourite(songs[i]);
                         favoriteBtn.setImageResource(R.drawable.ic_favorite);
+                        Toast.makeText(getContext(), "Removed From Favourite", Toast.LENGTH_SHORT).show();
                     }else {
                         favoriteBtn.setImageResource(R.drawable.ic_favorite_filled);
+                        Toast.makeText(getContext(), "Added to Favourite", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

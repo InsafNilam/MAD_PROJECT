@@ -39,10 +39,17 @@ public class PlayerActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()==android.R.id.home){
+        if(item.getItemId() == android.R.id.home){
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mediaPlayer.stop();
+        barVisualizer.release();
     }
 
     @Override
@@ -122,7 +129,6 @@ public class PlayerActivity extends AppCompatActivity {
                 }
             }
         };
-
         playerSeekBar.setMax(mediaPlayer.getDuration());
         updateSeekBar.start();
 

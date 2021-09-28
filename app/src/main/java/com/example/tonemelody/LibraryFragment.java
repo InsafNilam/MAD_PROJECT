@@ -16,15 +16,14 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
 
-public class LibraryFragment extends Fragment {
+public class LibraryFragment extends Fragment{
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    public LibraryFragment() {
+    private LibraryFragment() {
         // Required empty public constructor
     }
-
-    public static LibraryFragment newInstance(String param1, String param2) {
+    public static LibraryFragment newInstance() {
        return new LibraryFragment();
     }
 
@@ -39,7 +38,6 @@ public class LibraryFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main_track, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -50,11 +48,11 @@ public class LibraryFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
 
         FragmentAdapter adapter = new FragmentAdapter(Objects.requireNonNull(getFragmentManager()), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        adapter.addFragment(new FavouriteFragment(),"Favourites");
-        adapter.addFragment(new PlaylistFragment(),"Recently Added");
-        adapter.addFragment(new TrackFragment(),"Tracks");
+        adapter.addFragment(FavouriteFragment.newInstance(),"Favourites");
+        adapter.addFragment(PlaylistFragment.newInstance(),"Recently Added");
+        adapter.addFragment(TrackFragment.newInstance(),"Tracks");
+        adapter.notifyDataSetChanged();
 
         viewPager.setAdapter(adapter);
-
     }
 }

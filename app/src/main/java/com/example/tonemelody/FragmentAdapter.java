@@ -1,5 +1,7 @@
 package com.example.tonemelody;
 
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -37,10 +39,10 @@ public class FragmentAdapter extends FragmentPagerAdapter {
         stringArrayList.add(string);
         fragmentArrayList.add(fragment);
     }
-
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
         return stringArrayList.get(position);
     }
+
 }

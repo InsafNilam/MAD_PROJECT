@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -34,8 +35,7 @@ public class MainActivity extends AppCompatActivity {
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         navigationView = findViewById(R.id.bottom);
-        getSupportFragmentManager().beginTransaction().replace(R.id.body_container,new HomeFragment()).commit();
-        navigationView.setSelectedItemId(R.id.nav_home);
+        getSupportFragmentManager().beginTransaction().replace(R.id.body_container,HomeFragment.newInstance()).commit();
 
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
@@ -44,16 +44,16 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment = null;
                 switch (item.getItemId()){
                     case R.id.nav_home:
-                        fragment = new HomeFragment();
+                        fragment = HomeFragment.newInstance();
                         break;
                     case R.id.nav_search:
-                        fragment = new SearchFragment();
+                        fragment = SearchFragment.newInstance();
                         break;
                     case R.id.nav_tracks:
-                        fragment = new LibraryFragment();
+                        fragment = LibraryFragment.newInstance();
                         break;
                     case R.id.nav_shop:
-                        fragment = new ShopFragment();
+                        fragment = ShopFragment.newInstance();
                         break;
                 }
                 assert fragment != null;

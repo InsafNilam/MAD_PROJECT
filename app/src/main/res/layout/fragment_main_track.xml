@@ -4,22 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".LibraryFragment">
+    tools:context=".LibraryFragment"
+    android:background="@color/purple_500">
 
     <com.google.android.material.tabs.TabLayout
-        android:layout_margin="8dp"
         android:id="@+id/topTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabMode="scrollable"
-        app:tabGravity="center"
-        app:tabPadding="5dp"
-        app:tabIndicatorGravity="stretch"
-        app:tabSelectedTextColor="@color/white"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/tab_bg"
-        app:tabTextColor="@color/black"
+        app:tabGravity="center"
+        app:tabIndicator="@drawable/tab_selector"
         app:tabIndicatorAnimationMode="elastic"
-        app:tabIndicator="@drawable/tab_selector">
+        app:tabIndicatorGravity="center"
+        app:tabMode="scrollable"
+        app:tabPadding="5dp"
+        app:tabSelectedTextColor="@color/purple_500"
+        app:tabTextColor="@color/black">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

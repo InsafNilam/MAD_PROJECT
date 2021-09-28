@@ -32,7 +32,7 @@ public class PlaylistFragment extends Fragment {
     ImageView delete,update;
     TextView txtSong,descSong;
 
-    public PlaylistFragment() {
+    private PlaylistFragment() {
         // Required empty public constructor
     }
     public static PlaylistFragment newInstance() {
@@ -58,13 +58,13 @@ public class PlaylistFragment extends Fragment {
         listView = Objects.requireNonNull(getView()).findViewById(R.id.playListView);
         DB = new DataBaseHelper(getActivity());
 
-        cursor = DB.getPlaylistData();
         name = new ArrayList<>();
         url = new ArrayList<>();
         desc = new ArrayList<>();
 
+        cursor = DB.getPlaylistData();
 
-        if(cursor!=null){
+        if(cursor != null){
             while (cursor.moveToNext()){
                 name.add(cursor.getString(0));
                 desc.add(cursor.getString(1));
@@ -99,20 +99,18 @@ public class PlaylistFragment extends Fragment {
             delete = myView.findViewById(R.id.removePlaylist);
             update= myView.findViewById(R.id.updatePlaylist);
             txtSong.setSelected(true);
+            descSong.setSelected(true);
 
             txtSong.setText(name.get(i));
             descSong.setText(desc.get(i));
-
-
-
 
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("Confirmation");
-                    builder.setMessage("Are Your Sure to Remove?");
-                    builder.setIcon(R.drawable.ic_delete);
+                    builder.setMessage("Are Your Sure to Remove From Playlist?");
+                    builder.setIcon(R.drawable.ic_trash);
                     builder.setCancelable(true);
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
@@ -122,6 +120,7 @@ public class PlaylistFragment extends Fragment {
                             url.remove(i);
                             desc.remove(i);
                             notifyDataSetChanged();
+                            Toast.makeText(getContext(), "Successfully Removed", Toast.LENGTH_SHORT).show();
                         }
                     });
                     builder.setNegativeButton("No", null);
@@ -130,13 +129,6 @@ public class PlaylistFragment extends Fragment {
 
                 }
             });
-
-
-
-
-
-
-
             update.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -152,7 +144,10 @@ public class PlaylistFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int j) {
                             DB.updatePlaylist(name.get(i),editText.getText().toString() ,url.get(i));
+                            desc.add(i,editText.getText().toString());
+                            desc.remove(i+1);
                             notifyDataSetChanged();
+                            Toast.makeText(getContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
                         }
                     });
                     builder.setNegativeButton("No",null);

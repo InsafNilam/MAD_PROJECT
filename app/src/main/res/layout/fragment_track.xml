@@ -5,50 +5,45 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".TrackFragment"
-    android:background="#191A1F">
+    android:background="@color/purple_500">
 
     <RelativeLayout
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp">
+
         <LinearLayout
             android:id="@+id/searchBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/round_back">
+
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_margin="10dp"
                 android:src="@drawable/ic_search" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/searchItem"
+                android:text="Hello"
+                android:textColor="@color/white"
+                android:padding="5dp"/>
         </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
             android:text="Tracks"
             android:textColor="#fff"
             android:textSize="18sp"
             android:textStyle="bold" />
-
-        <LinearLayout
-            android:id="@+id/menuBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/round_back">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_margin="10dp"
-                android:src="@drawable/ic_menu" />
-        </LinearLayout>
     </RelativeLayout>
 
     <ListView
@@ -106,13 +101,25 @@
                 android:textColor="#fff"
                 android:textSize="12sp" />
         </RelativeLayout>
+        <LinearLayout
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:orientation="horizontal"
+            android:layout_gravity="end"
+            android:layout_marginEnd="25dp">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/round_back"
+                android:src="@drawable/ic_zoom_out"
+                android:id="@+id/zoom"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
-
             <ImageView
                 android:id="@+id/fastRewindBtn"
                 android:layout_width="50dp"
